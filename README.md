@@ -1,6 +1,6 @@
 # To-Do List em Laravel
 
-Este é um projeto de um sistema de lista de tarefas (To-Do List) desenvolvido para a disciplina de Tópicos Especiais em Informática. O sistema foi construído utilizando o framework PHP **Laravel** e estilizado com **Bootstrap** para uma interface moderna e responsiva.
+Este é um projeto de um sistema de lista de tarefas (To-Do List) desenvolvido para a disciplina de Tópicos Especiais do Técnico em Informática. O sistema foi construído utilizando o framework PHP **Laravel** e estilizado com **Bootstrap** para uma interface moderna e responsiva.
 
 ## Funcionalidades
 
