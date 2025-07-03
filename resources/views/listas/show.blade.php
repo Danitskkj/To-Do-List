@@ -15,9 +15,14 @@
             <a href="{{ route('listas.index') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>Voltar às Listas
             </a>
-            <a href="{{ route('tarefas.create') }}?lista_id={{ $lista->id }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Nova Tarefa
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('listas.edit', $lista) }}" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil me-2"></i>Editar Lista
+                </a>
+                <a href="{{ route('tarefas.create') }}?lista_id={{ $lista->id }}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-2"></i>Nova Tarefa
+                </a>
+            </div>
         </div>
     </div>
 
@@ -25,9 +30,9 @@
         <div class="card">
             <div class="card-body">
                 @foreach($lista->tarefas as $tarefa)
-                    <div class="task-item">
+                    <div class="task-item" onclick="window.location.href='{{ route('tarefas.edit', $tarefa) }}'">
                         <div class="d-flex align-items-center">
-                            <div class="form-check me-3">
+                            <div class="form-check me-3" onclick="event.stopPropagation();">
                                 <input 
                                     class="form-check-input task-checkbox" 
                                     type="checkbox" 
@@ -45,15 +50,20 @@
                                     </small>
                                 @endif
                             </div>
-                            <div class="task-actions">
-                                <form method="POST" action="{{ route('tarefas.destroy', $tarefa) }}" class="d-inline" 
-                                      onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Excluir tarefa">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                            <div class="task-actions" onclick="event.stopPropagation();">
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('tarefas.edit', $tarefa) }}" class="btn btn-outline-primary btn-sm" title="Editar tarefa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="POST" action="{{ route('tarefas.destroy', $tarefa) }}" class="d-inline" 
+                                          onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Excluir tarefa">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

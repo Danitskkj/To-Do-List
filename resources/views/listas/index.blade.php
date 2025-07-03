@@ -17,19 +17,21 @@
     @if($listas->count() > 0)
         <div class="d-flex flex-column gap-3">
             @foreach($listas as $lista)
-                <a href="{{ route('listas.show', $lista) }}" class="card-clickable">
-                    <div class="card shadow-sm">
-                        <div class="card-body py-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="flex-grow-1">
-                                    <h5 class="card-title mb-0 text-white">{{ $lista->titulo }}</h5>
-                                    @if($lista->descricao)
-                                        <p class="card-text text-muted mb-0 small mt-2">{{ Str::limit($lista->descricao, 100) }}</p>
-                                    @endif
-                                </div>
-                                <form method="POST" action="{{ route('listas.destroy', $lista) }}" class="d-inline ms-3" 
-                                      onsubmit="return confirm('Tem certeza que deseja excluir esta lista e todas as suas tarefas?')"
-                                      onclick="event.stopPropagation();">
+                <div class="card shadow-sm position-relative" onclick="window.location.href='{{ route('listas.show', $lista) }}'">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0 text-white">{{ $lista->titulo }}</h5>
+                                @if($lista->descricao)
+                                    <p class="card-text text-muted mb-0 small mt-2">{{ Str::limit($lista->descricao, 100) }}</p>
+                                @endif
+                            </div>
+                            <div class="d-flex gap-2 ms-3" onclick="event.stopPropagation();">
+                                <a href="{{ route('listas.edit', $lista) }}" class="btn btn-outline-primary btn-sm" title="Editar lista">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="POST" action="{{ route('listas.destroy', $lista) }}" class="d-inline" 
+                                      onsubmit="return confirm('Tem certeza que deseja excluir esta lista e todas as suas tarefas?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger btn-sm" title="Excluir lista">
@@ -39,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
             @endforeach
         </div>
     @else

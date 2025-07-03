@@ -13,6 +13,8 @@
                 <h1 class="display-2 fw-bold text-white mb-3" style="text-shadow: 0 0 40px rgba(155, 78, 221, 0.6);">
                     To-Do List
                 </h1>
+                <h3>by Danits</h3>
+                <br><br>
                 <p class="lead text-white mb-4 fs-4" style="opacity: 0.9;">
                     Organize suas tarefas de forma simples e eficiente
                 </p>

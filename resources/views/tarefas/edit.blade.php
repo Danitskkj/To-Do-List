@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('titulo')
-    <i class="bi bi-plus-circle me-2"></i>Nova Tarefa
+    <i class="bi bi-pencil-square me-2"></i>Editar Tarefa
 @endsection
 
 @section('conteudo')
@@ -10,12 +10,13 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-transparent border-bottom">
                     <h5 class="mb-0">
-                        <i class="bi bi-check2-square me-2 text-white"></i>Criar Nova Tarefa
+                        <i class="bi bi-pencil-square me-2 text-white"></i>Editar Tarefa
                     </h5>
                 </div>
                 <div class="card-body p-4">
-                    <form method="POST" action="{{ route('tarefas.store') }}">
+                    <form method="POST" action="{{ route('tarefas.update', $tarefa) }}">
                         @csrf
+                        @method('PUT')
                         
                         <div class="mb-3">
                             <label for="titulo" class="form-label fw-semibold">
@@ -27,7 +28,7 @@
                                 id="titulo"
                                 class="form-control @error('titulo') is-invalid @enderror" 
                                 placeholder="Ex: Comprar leite, Terminar relatório..." 
-                                value="{{ old('titulo') }}"
+                                value="{{ old('titulo', $tarefa->titulo) }}"
                                 required
                                 autofocus
                             >
@@ -46,47 +47,33 @@
                                 class="form-control @error('descricao') is-invalid @enderror" 
                                 rows="3"
                                 placeholder="Opcional - Adicione detalhes sobre esta tarefa"
-                            >{{ old('descricao') }}</textarea>
+                            >{{ old('descricao', $tarefa->descricao) }}</textarea>
                             @error('descricao')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        @if($lista_id)
-                            <input type="hidden" name="lista_id" value="{{ $lista_id }}">
-                            <div class="alert d-flex align-items-center mb-3" style="
-                                background: linear-gradient(135deg, rgba(13, 202, 240, 0.15), rgba(13, 110, 253, 0.15));
-                                border: 1px solid rgba(13, 202, 240, 0.3);
-                                border-radius: 12px;
-                                color: #0dcaf0;
-                                backdrop-filter: blur(10px);
-                            ">
-                                <i class="bi bi-info-circle me-2"></i>
-                                <span>Esta tarefa será adicionada à lista atual</span>
-                            </div>
-                        @else
-                            <div class="mb-3">
-                                <label for="lista_id" class="form-label fw-semibold">
-                                    <i class="bi bi-journal-text me-1"></i>Lista
-                                </label>
-                                <select 
-                                    name="lista_id" 
-                                    id="lista_id"
-                                    class="form-select @error('lista_id') is-invalid @enderror" 
-                                    required
-                                >
-                                    <option value="">Selecione uma lista</option>
-                                    @foreach($listas as $lista)
-                                        <option value="{{ $lista->id }}" {{ old('lista_id') == $lista->id ? 'selected' : '' }}>
-                                            {{ $lista->titulo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('lista_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endif
+                        <div class="mb-3">
+                            <label for="lista_id" class="form-label fw-semibold">
+                                <i class="bi bi-journal-text me-1"></i>Lista
+                            </label>
+                            <select 
+                                name="lista_id" 
+                                id="lista_id"
+                                class="form-select @error('lista_id') is-invalid @enderror" 
+                                required
+                            >
+                                <option value="">Selecione uma lista</option>
+                                @foreach($listas as $lista)
+                                    <option value="{{ $lista->id }}" {{ old('lista_id', $tarefa->lista_id) == $lista->id ? 'selected' : '' }}>
+                                        {{ $lista->titulo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('lista_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <div class="mb-4">
                             <div class="form-check">
@@ -97,20 +84,20 @@
                                     value="1" 
                                     id="concluida"
                                     class="form-check-input"
-                                    {{ old('concluida') ? 'checked' : '' }}
+                                    {{ old('concluida', $tarefa->concluida) ? 'checked' : '' }}
                                 >
                                 <label for="concluida" class="form-check-label">
-                                    <i class="bi bi-check-circle me-1"></i>Marcar como concluída
+                                    Marcar como concluída
                                 </label>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ $lista_id ? route('listas.show', $lista_id) : route('listas.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('listas.show', $tarefa->lista_id) }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-x-lg me-1"></i>Cancelar
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-lg me-1"></i>Criar Tarefa
+                                <i class="bi bi-check-lg me-1"></i>Salvar Alterações
                             </button>
                         </div>
                     </form>

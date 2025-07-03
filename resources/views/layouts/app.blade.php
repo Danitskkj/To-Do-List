@@ -212,15 +212,15 @@
         }
         
         .form-check-input:checked::before {
-            content: '';
+            content: '✓';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60%;
-            height: 2px;
-            background: white;
-            border-radius: 1px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            line-height: 1;
         }
         
         .form-check-input:focus {
@@ -232,6 +232,7 @@
             text-decoration: line-through;
             opacity: 0.4;
             color: var(--text-muted) !important;
+            position: relative;
         }
         
         .btn-delete {
@@ -253,17 +254,49 @@
         
         .btn-outline-danger {
             border: 1px solid var(--border-subtle);
-            color: var(--text-muted);
+            color: var(--text-white);
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+          .btn-outline-danger:hover {
+            background: rgba(220, 53, 69, 0.2);
+            border-color: #dc3545;
+            color: #dc3545;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            transform: translateY(-1px);
         }
         
-        .btn-outline-danger:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--border-accent);
+        .btn-outline-primary {
+            border: 1px solid var(--purple-4);
             color: var(--text-white);
+            border-radius: 8px;
+            background: rgba(155, 78, 221, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, var(--purple-4), var(--purple-5));
+            border-color: var(--purple-5);
+            color: var(--text-white);
+            box-shadow: 0 4px 15px rgba(155, 78, 221, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline-primary i {
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-outline-primary:hover i {
+            transform: scale(1.1);
+        }
+        
+        /* Áreas clicáveis */
+        .clickable-area {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+        }
+
         .badge {
             font-weight: 600;
             letter-spacing: 0.5px;
@@ -348,6 +381,25 @@
             transform: translateY(-2px);
         }
         
+        /* Hover melhorado para cards de lista */
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(155, 78, 221, 0.2) !important;
+        }
+        
+        .card:hover .clickable-area h5 {
+            color: var(--purple-6) !important;
+        }
+        
+        .card:hover .clickable-area p {
+            color: var(--purple-7) !important;
+        }
+        
         .btn {
             font-weight: 600;
             letter-spacing: 0.5px;
@@ -429,11 +481,26 @@
         .btn-outline-secondary i {
             transition: transform 0.2s ease;
         }
-        
-        .btn-outline-secondary:hover i {
+          .btn-outline-secondary:hover i {
             transform: translateX(-2px);
         }
         
+        .task-actions .btn,
+        .d-flex.gap-2 .btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .task-actions .btn:hover,
+        .d-flex.gap-2 .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Melhor feedback visual para botões */
+        .btn-sm:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -484,12 +551,22 @@
             margin-bottom: 12px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
+            position: relative;
+            cursor: pointer;
         }
         
         .task-item:hover {
             background: rgba(155, 78, 221, 0.08);
             transform: translateY(-2px);
             box-shadow: 0 8px 32px rgba(155, 78, 221, 0.15);
+        }
+        
+        .task-item:hover .task-content h6 {
+            color: var(--purple-6) !important;
+        }
+        
+        .task-item:hover .task-content small {
+            color: var(--purple-7) !important;
         }
         
         .task-item:last-child {
@@ -544,6 +621,25 @@
                         <h1 class="text-light mb-4">@yield('titulo')</h1>
                     </div>
                 @endif
+                
+                <!-- Mensagens de Sucesso -->
+                @if(session('success'))
+                    <div class="alert alert-dismissible fade show mb-4" style="
+                        background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(25, 135, 84, 0.15));
+                        border: 1px solid rgba(40, 167, 69, 0.3);
+                        border-radius: 12px;
+                        color: #28a745;
+                        backdrop-filter: blur(10px);
+                        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+                    ">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter: brightness(0) invert(1);"></button>
+                    </div>
+                @endif
+                
                 @yield('conteudo')
             </div>
         </div>
